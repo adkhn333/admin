@@ -1,0 +1,405 @@
+<div ng-controller="editCtrl">
+  <form name="vendorform">
+    <md-toolbar class="md-primary">
+      <div class="md-toolbar-tools">
+        <h2 class="md-flex">Edit Vendor Details</h2>
+      </div>
+    </md-toolbar>
+    <div flex-offset="10" flex="80">
+      <md-card>
+        <div layout-padding>
+          <div>
+
+            <md-input-container class="md-block">
+              <label>Vendor Name</label>
+              <input required name="vendorname" ng-model="vendor.name">
+              <div ng-messages="vendorform.vendorname.$error">
+                <div ng-message="required">This is required.</div>
+              </div>
+            </md-input-container>
+
+
+            <md-input-container>
+              <label>Latitude</label>
+              <input type=number step=0.01 ng-model="vendor.latitude" required name="latitude">
+
+              <div ng-messages="vendorform.latitude.$error">
+                <div ng-message="required">This is Required</div>
+              </div>
+
+            </md-input-container>
+
+            <md-input-container>
+              <label>Longitude</label>
+              <input type=number step="0.01" ng-model="vendor.longitude" required name="longitude">
+              <div ng-messages="vendorform.longitude.$error">
+                <div ng-message="required">This is Required</div>
+              </div>
+            </md-input-container>
+            <md-select ng-model="vendor.type" placeholder="Type" required>
+              <md-option> Silver </md-option>
+              <md-option> Gold </md-option>
+              <md-option> Platinum </md-option>
+
+            </md-select>
+          </div>
+
+          <md-input-container class="md-block">
+            <label>Address </label>
+            <input ng-model="vendor.address1" required name="address1">
+
+            <div ng-messages="vendorform.address1.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+          </md-input-container>
+          <md-input-container md-no-float class="md-block">
+            <input ng-model="vendor.address2" placeholder="Address 2" required name="address2">
+            <div ng-messages="vendorform.address2.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+          </md-input-container>
+
+          <md-select ng-model="vendor.stat" ng-change="onClick()" placeholder="State">
+
+            <md-option ng-repeat="(key, data) in states">
+              {{key}}
+
+
+            </md-option>
+
+          </md-select>
+
+
+          <md-select ng-model="vendor.city" placeholder="City">
+            <md-option ng-repeat="(key, data) in cities">
+              {{data[key]}}
+            </md-option>
+
+          </md-select>
+
+          <md-input-container>
+            <label>Landmark</label>
+            <input ng-model="vendor.landmark" required name="landmark">
+            <div ng-messages="vendorform.landmark.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+          </md-input-container>
+
+          <md-input-container>
+            <label>Country</label>
+            <input ng-model="vendor.country" required name="country">
+            <div ng-messages="vendorform.country.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+          </md-input-container>
+          <br />
+
+
+          <md-select ng-model="vendor.gender" placeholder="Gender">
+            <md-option> Male </md-option>
+            <md-option> Female </md-option>
+            <md-option> Unisex </md-option>
+            <md-option> Kids </md-option>
+
+          </md-select>
+
+
+          <md-input-container>
+            <label>Contact Person Name</label>
+            <input ng-model="vendor.contactpersonname" required name="personname">
+            <div ng-messages="vendorform.personname.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+          </md-input-container>
+
+
+          <md-input-container class="md-block">
+            <label>Vendor Email</label>
+            <input required type="email" name="vendorEmail" ng-model="vendor.emailid" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+            <div ng-messages="vendorform.vendorEmail.$error" role="alert">
+              <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                Your email must be between 10 and 100 characters long and look like an e-mail address.
+              </div>
+            </div>
+          </md-input-container>
+
+          <md-input-container class="md-block">
+            <label>Vendor Phone</label>
+            <input required type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="vendorphone" ng-model="vendor.phoneno" minlength="10" maxlength="10" />
+            <div ng-messages="vendorform.vendorphone.$error" role="alert">
+              <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                Your Phone no must be 10 characters long .
+              </div>
+            </div>
+          </md-input-container>
+
+
+          <md-input-container class="md-block">
+            <label>Landline No</label>
+            <input type="text" ng-model="vendor.landlineno" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+          </md-input-container>
+
+          <md-input-container class="md-block">
+            <label>Secondary Contact Person Name</label>
+            <input ng-model="vendor.secondarycontactpersonname">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Secondary Email ID</label>
+            <input ng-model="vendor.secondaryemailid" type="email">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Secondary Phone No</label>
+            <input type="text" ng-model="vendor.secondaryphoneno" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Secondary Landline No</label>
+            <input type="text" ng-model="vendor.secondarylandlineno" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+          </md-input-container>
+          <br />
+
+          <md-input-container class="md-block">
+            <label>Complaint  Person Name</label>
+            <input ng-model="vendor.complaintpersonname">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Escalation Email ID</label>
+            <input ng-model="vendor.escalationemailid" type="email">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label> Escalation Phone No</label>
+            <input type="text" ng-model="vendor.escalationphoneno" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+          </md-input-container>
+
+          <md-card>
+
+            <md-toolbar class="md-primary">
+              <div class="md-toolbar-tools">
+                <h2 class="md-flex">Facilities</h2>
+              </div>
+              <br />
+            </md-toolbar>
+            <br />
+            <md-checkbox ng-model="vendor.ac" aria-label="Checkbox 1">
+              AC
+            </md-checkbox>
+            <md-checkbox ng-model="vendor.parking" aria-label="Checkbox 1">
+              Parking
+            </md-checkbox>
+
+            <md-checkbox ng-model="vendor.tea_coffee" aria-label="Checkbox 1">
+              Tea/Coffee
+            </md-checkbox>
+            <md-checkbox ng-model="vendor.cc_accepted" aria-label="Checkbox 1">
+              Credit Card Accepted
+            </md-checkbox>
+            <md-checkbox ng-model="vendor.wifi" aria-label="Checkbox 1">
+              Wifi
+            </md-checkbox>
+
+          </md-card>
+
+
+          <md-card>
+
+            <md-toolbar class="md-primary">
+              <div class="md-toolbar-tools">
+                <h2 class="md-flex">Working Days</h2>
+              </div>
+
+            </md-toolbar>
+            <br />
+
+            <md-checkbox ng-model="data.selectall" aria-label="Checkbox 1">
+              Select All
+            </md-checkbox>
+            <div ng-if="data.selectall==true" ng-init="data.cb0=data.cb1=data.cb2=data.cb3=data.cb4=data.cb5=data.cb6=true">
+
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.allstart" ng-change="master_start()">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.allend" ng-change="master_end()">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+
+            <md-checkbox ng-model="data.cb0" aria-label="Checkbox 1">
+              Sunday
+            </md-checkbox>
+            <div ng-if="data.cb0==true">
+
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.sunday_start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.sunday_end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+
+
+            <md-checkbox ng-model="data.cb1" aria-label="Checkbox 1">
+              Monday
+            </md-checkbox>
+            <div ng-if="data.cb1==true">
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.monday_start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.monday_end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+
+            <md-checkbox ng-model="data.cb2" aria-label="Checkbox 1">
+              Tuesday
+            </md-checkbox>
+            <div ng-if="data.cb2==true">
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.tuesday_start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.tuesday_end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+            <md-checkbox ng-model="data.cb3" aria-label="Checkbox 1">
+              Wednesday
+            </md-checkbox>
+            <div ng-if="data.cb3==true">
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.wednesday_start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.wednesday_end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+            <md-checkbox ng-model="data.cb4" aria-label="Checkbox 1">
+              Thursday
+            </md-checkbox>
+
+            <div ng-if="data.cb4==true">
+
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.thursday_start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.thursday_end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+
+            <md-checkbox ng-model="data.cb5" aria-label="Checkbox 1">
+              Friday
+            </md-checkbox>
+            <div ng-if="data.cb5==true">
+
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.friday_start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.friday_end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+
+            <md-checkbox ng-model="data.cb6" aria-label="Checkbox 1">
+              Saturday
+            </md-checkbox>
+            <div ng-if="data.cb6==true">
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.saturday_start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.saturday_end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+
+            </div>
+          </md-card>
+          <div layout="row" layout-align="end end">
+            <md-button class="md-raised md-primary" ng-click="send()">Submit</md-button>
+          </div>
+
+        </div>
+
+
+      </md-card>
+
+
+    </div>
+  </form>
+</div>

@@ -1,0 +1,24 @@
+{
+    "Haryana": [
+        {
+            "0":"John"
+        },
+        {
+            "1":"Anna"
+        },
+        {
+            "2":"Peter"
+        }
+    ],
+    "Rajasthan":[
+        {
+            "0":"Kota"
+        },
+        {
+            "1":"Jaipur"
+        },
+        {
+            "2":"Bikaner"
+        }
+    ]
+}

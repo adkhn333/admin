@@ -1,0 +1,38 @@
+{
+    "city": {
+        "data": {
+            "cityID": {
+                "city": "gurgaon",
+                "country": "India",
+                "id": "cityID",
+                "lat": "123",
+                "lng": "123",
+                "state": "Haryana"
+            }
+        }
+    },
+    "location": {
+        "data": {
+            "cityID": {
+                "pushKey1": {
+                    "cityId": "cityID",
+                    "cityName": "gurgaon",
+                    "createdTime": "123123123",
+                    "id": "pushKey1",
+                    "lat": "123",
+                    "lng":"123",
+                    "locationName": "Sohna Road"
+                },
+                "pushKey2": {
+                    "cityId": "cityID",
+                    "cityName": "gurgaon",
+                    "createdTime": "123123123",
+                    "id": "pushKey1",
+                    "lat": "123",
+                    "lng":"123",
+                    "locationName": "Sohna Road"
+                }
+            }
+        }
+    }
+}

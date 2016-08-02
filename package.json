@@ -1,0 +1,15 @@
+{
+  "name": "admin",
+  "version": "1.0.0",
+  "description": "Admin Fab2U Vendor",
+  "dependencies": {
+    "angular": "^1.5.5",
+    "ngRoute": "^1.5.5",
+    "angular-ui-router": "^0.2.18",
+    "angular-animate": "^1.5.5",
+    "angular-aria": "^1.5.5",
+    "angular-messages": "^1.5.5",
+    "angular-material": "^1.1.0-rc.5",
+    "live-server": "^1.0.0"
+  }
+}

@@ -1,0 +1,210 @@
+<md-content>
+    <md-card class="md-padding">
+        <md-card-title>
+            <md-card-title-text>
+            <span class="md-headline">Vendor Services</span>
+            <span class="md-subhead">Vendor Service</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <form name="vendorServiceForm">
+            <div layout="row" layout-align="center center">
+                <div flex="33">
+                    <md-input-container class="md-block">
+                        <label>Vendor City</label>
+                        <md-select ng-model="vendorCity" md-on-open="getCities()">
+                            <md-option 
+                            ng-repeat="city in vendorCities" 
+                            value="{{city.id}}"
+                            ng-click="findLocationByCity(city.id)">
+                            {{city.city}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div flex="33">
+                    <md-input-container class="md-block">
+                        <label>Vendor Location</label>
+                        <md-select ng-model="vendorLocation">
+                            <md-option 
+                            ng-repeat="location in vendorLocations" 
+                            value="{{location.id}}"
+                            ng-click="findVendorsByLocation(vendorCity,location.id)">
+                            {{location.locationName}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div flex="33">
+                    <md-input-container class="md-block" id="vendorRetrieve">
+                        <label>Vendor Name</label>
+                        <md-select ng-model="vendorName">
+                            <md-option 
+                            ng-repeat="(key, vendor) in vendorList" 
+                            value="{{key}}"
+                            ng-click="fillVendorDetails(key)">
+                            {{vendor.active.vendorName}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" layout-align="center center">
+                <div flex="25">
+                    <md-input-container class="md-block" flex-gt-sm required>
+                        <label>Services</label>
+                        <md-select style="padding-bottom: 24px;" ng-model="tvendorService.val.serviceId">
+                            <md-option
+                                ng-repeat="service in services" 
+                                value="{{service.id}}"
+                                required>
+                                {{service.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div flex="25">
+                    <!--
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Service Sub Category</label>
+                        <md-select ng-model="tvendorService.serviceSubCategory">
+                        <md-option ng-repeat="ssc in serviceSubCategories[tvendorService.serviceName]" value="{{ssc}}" required>
+                        {{ssc}}
+                        </md-option>
+                        </md-select>
+                    </md-input-container>
+                    -->
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Services Menu Title</label>
+                        <input ng-model="tvendorService.val.menuTitle" type="text" required>
+                    </md-input-container>
+                </div>
+                <div flex="25">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Duration</label>
+                        <input ng-model="tvendorService.val.duration" type="text" required>
+                    </md-input-container>
+                </div>
+                <div flex="25">
+                    <label> Gender </label>
+                    <md-checkbox aria-label="male-checkbox" ng-model="tvendorService.val.male" ng-init="tvendorService.val.male = null">
+                        M
+                    </md-checkbox>
+                    <md-checkbox aria-label="female-checkbox" ng-model="tvendorService.val.female" ng-init="tvendorService.val.female = null">
+                        F
+                    </md-checkbox>
+                    <md-checkbox aria-label="female-checkbox" ng-model="tvendorService.val.kids" ng-init="tvendorService.val.kids = null">
+                        K
+                    </md-checkbox>
+                </div>
+            </div>
+            <div layout="row" layout-wrap>
+                <div flex>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Vendor Price</label>
+                    <input ng-model="tvendorService.val.listPrice" type="number" required>
+                </md-input-container>
+                </div>
+                <div flex>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Customer Price</label>
+                    <input ng-model="tvendorService.val.customerPrice" type="number" required>
+                </md-input-container>
+                </div>
+                <div flex>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Fab2u Price</label>
+                    <input ng-model="tvendorService.val.fab2uPrice" type="number" required>
+                </md-input-container>
+                </div>
+            </div>
+            </form>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button
+                    class="md-raised md-primary"
+                    ng-disabled="vendorServiceForm.$pristine"
+                    ng-enabled="vendorServiceForm.$dirty"
+                    ng-click="reset()">
+                Reset
+            </md-button>
+            <md-button
+                    ng-hide="editItem"
+                    class="md-raised md-primary"
+                    ng-disabled="vendorServiceForm.$invalid || !tvendorService.val.male && !tvendorService.val.female && !tvendorService.val.kids"
+                    ng-click="pushServiceInMain()">
+                Add
+            </md-button>
+            <md-button
+                    ng-show="editItem"
+                    class="md-raised md-primary"
+                    ng-disabled="vendorServiceForm.$invalid || !tvendorService.val.male && !tvendorService.val.female && !tvendorService.val.kids"
+                    ng-click="updateServiceInMain(tvendorService)">
+                Update
+            </md-button>
+        </md-card-actions>
+        </md-card>
+        <md-card class="md-padding">
+        <table>
+            <tr>
+            <th>Service</th>
+            <!--<th>Service ID</th>-->
+            <th>Menu title</th>
+            <th>L Price</th>
+            <th>C Price</th>
+            <th>F Price</th>
+            <th>Gender(M/F/K)</th>
+            <th>Edit</th>
+            <!--<th>Status</th>-->
+            <th>Delete</th>
+            </tr>
+            <tr ng-repeat="service in vendorServices">
+                <td>{{ service.val.serviceName }}</td>
+                <!--<td>{{ service.val.serviceId }}</td>-->
+                <td>{{ service.val.menuTitle }}</td>
+                <td>{{ service.val.listPrice }}</td>
+                <td>{{ service.val.customerPrice }}</td>
+                <td>{{ service.val.fab2uPrice }}</td>
+                <th>{{ service.val.male==true ? 'M':'NA' }}
+                    /{{ service.val.female==true ? 'F': 'NA'}}
+                    /{{ service.val.kids==true ? 'K': 'NA'}}</th>
+                <td>
+                    <md-button 
+                    ng-click="editVendorService(service)"
+                    class="md-fab md-mini md-accent md-raised">
+                    x
+                    </md-button>
+                </td>
+                <td>
+                    <md-button
+                    ng-click="removeVendorService(service)"
+                    class="md-fab md-mini md-accent md-raised">
+                    d
+                    </md-button>
+                </td>
+            </tr>
+        </table>
+        <!--<md-card-actions layout="row" layout-align="end center">
+            <md-button id="vendorSubmitButton" class="md-raised md-primary" ng-click="submit($event)">Save</md-button>
+        </md-card-actions>-->
+    </md-card>
+    <md-card>
+        <ul> 
+            <li ng-repeat="servic in servics">
+                <ul>
+                    <li ng-repeat="it in servic">
+                       {{it.menuTitle}}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </md-card>
+    <!--<md-card>
+      <md-card-content>
+          To Publish This Version Click Here.
+      </md-card-content>
+      <md-card-actions layout="row" layout-align="end end">
+          <md-button class="md-raised md-primary" ng-click="publish($event)">Submit</md-button>
+      </md-card-actions>
+    </md-card>-->
+</md-content>

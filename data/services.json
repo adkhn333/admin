@@ -1,0 +1,36 @@
+{
+    "services": {
+        "pushKey1": {
+            "id": "01",
+            "name": "Hair Cut and Styling"
+        },
+        "pushKey2": {
+            "id": "02",
+            "name": "Face"
+        },
+        "pushKey3": {
+            "id": "03",
+            "name": "Spa and Massages"
+        },
+        "pushKey4": {
+            "id": "04",
+            "name": "Fitness"
+        },
+        "pushKey5": {
+            "id": "05",
+            "name": "Look Special"
+        },
+        "pushKey6": {
+            "id": "06",
+            "name": "Hand Feet and Nails"
+        },
+        "pushKey7": {
+            "id": "07",
+            "name": "Packages"
+        },
+        "pushKey8": {
+            "id": "08",
+            "name": "Body Care"
+        }
+    }
+}

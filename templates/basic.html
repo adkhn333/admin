@@ -1,0 +1,496 @@
+<div>
+  <!--
+  {{test.id}}<br>
+  {{test.name}}
+  <input type="text" ng-model="arpit.name"/>
+  <input type="text" ng-model="arpit.id" ng-init="arpit.id= null"/> 
+  <button ng-click="savefb()">Save</button>
+  -->
+  <form name="vendorform">
+    <md-toolbar class="md-primary">
+      <div class="md-toolbar-tools">
+        <h2 class="md-flex">Vendor Details</h2>
+      </div>
+    </md-toolbar>
+    <div flex-offset="10" flex="80">
+      <md-card>
+        <div layout-padding>
+          <div>
+            <!--
+            <md-switch 
+              ng-model="operation" 
+              ng-true-value="'Submit'" 
+              ng-false-value="'Retrieve'" 
+              aria-label="Submit/Retrieve"
+              ng-change="toggle()">
+              {{operation}}
+            </md-switch>
+            -->
+            <!--
+            <md-input-container class="md-block" id="vendorRetrieve">
+              <label>Vendor Name</label>
+              <md-select ng-model="vendor.vendorName">
+                <md-option 
+                  ng-repeat="ven in vendors" 
+                  value="{{ven.val.vendorName}}"
+                  ng-click="fillValues(ven.key)">
+                  {{ven.val.vendorName}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+            -->
+
+            <md-input-container class="md-block" id="vendorSubmit">
+              <label>Vendor Name</label>
+              <input name="vendorname" required ng-model="vendor.vendorName">
+              <div ng-messages="vendorform.vendorname.$error">
+                <div ng-message="required">Vendor name is required.</div>
+              </div>
+            </md-input-container>
+
+            <md-select name="vendorcategory" ng-model="vendor.vendorCategory" placeholder="Vendor Category" required>
+              <md-option> Silver </md-option>
+              <md-option> Gold </md-option>
+              <md-option> Platinum </md-option>
+            </md-select>
+
+            <md-checkbox 
+              ng-model="vendor.featuredVendor.active"
+              aria-label="Featured Vendor" 
+              ng-init="">
+              Featured Vendor
+            </md-checkbox>
+
+            <div ng-if="vendor.featuredVendor.active==true">
+              <md-input-container class="md-block">
+                <label>Placement</label>
+                <input ng-model="vendor.featuredVendor.placement">
+              </md-input-container>
+              <md-input-container class="md-block">
+                <label>Position</label>
+                <input ng-model="vendor.featuredVendor.position">
+              </md-input-container>
+            </div>
+            
+            <!--
+            <md-input-container class="md-block">
+              <label>Rating</label>
+              <input required ng-model="vendor.rating" value="{{vendor.rating}}">
+            </md-input-container>
+            -->
+
+            <md-select ng-model="vendor.gender" placeholder="Gender">
+              <md-option> Male </md-option>
+              <md-option> Female </md-option>
+              <md-option> Unisex </md-option>
+              <md-option> Kids </md-option>
+            </md-select>
+
+          </div>
+
+          <md-input-container class="md-block">
+            <label>Address Line 1</label>
+            <input ng-model="vendor.address.addressLine1" required name="address1">
+            <div ng-messages="vendorform.address1.$error">
+              <div ng-message="required">This is required.</div>
+            </div>
+          </md-input-container>
+
+          <md-select ng-model="vendor.address.cityId" placeholder="City" required
+                     md-on-open="getCities()">
+            <md-option ng-repeat="city in cities"
+                       ng-click="findLocationForCity(city.cityId)"
+                       value="{{city.cityId}}">
+              {{city.cityName}}
+            </md-option>
+          </md-select>
+
+          <md-select ng-model="vendor.address.locationId" placeholder="Location" required>
+            <md-option ng-repeat="location in locations" value="{{location.locationId}}">
+              {{location.locationName}}
+            </md-option>
+          </md-select>
+
+          <md-input-container class="md-block">
+            <label>Address Line 2</label>
+            <input ng-model="vendor.address.addressLine2" ng-init="vendor.address.addressLine2==null">
+          </md-input-container>
+          
+          <md-input-container>
+            <label>Latitude</label>
+            <input type=number step=0.01 ng-model="vendor.address.latitude" ng-init="vendor.address.latitude = null">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Longitude</label>
+            <input type=number step="0.01" ng-model="vendor.address.longitude" ng-init="vendor.address.longitude = null">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Landmark</label>
+            <input ng-model="vendor.address.landmark" ng-init="vendor.address.landmark = null">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Pin Code</label>
+            <input ng-model="vendor.address.pincode" ng-init="vendor.address.pincode = null">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Contact Person Name</label>
+            <input ng-model="vendor.contactDetails.primaryContactPerson" ng-init="vendor.contactDetails.primaryContactPerson = null">
+          </md-input-container>
+            
+          <md-input-container class="md-block">
+            <label>Vendor Email</label>
+            <input type="email" name="vendorEmail" ng-model="vendor.contactDetails.primaryEmailId"
+                   minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/"
+                   ng-init="vendor.contactDetails.primaryEmailId = null"/>
+            <div ng-messages="vendorform.vendorEmail.$error" role="alert">
+              <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                Your email must be between 10 and 100 characters long and look like an e-mail address.
+              </div>
+            </div>
+          </md-input-container>
+            
+          <md-input-container class="md-block">
+            <label>Vendor Phone</label>
+            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                   name="vendorphone" ng-model="vendor.contactDetails.primaryMobileNumber"
+                   minlength="10" maxlength="10"  
+                   ng-init="vendor.contactDetails.primaryMobileNumber = null"/>
+            <div ng-messages="vendorform.vendorphone.$error" role="alert">
+              <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                Your Phone no must be 10 characters long .
+              </div>
+            </div>
+          </md-input-container>
+            
+          
+          <md-input-container class="md-block">
+            <label>Landline No</label>
+            <input type="text" ng-model="vendor.contactDetails.primaryLandlineNumber"
+                   onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                   ng-init="vendor.contactDetails.primaryLandlineNumber = null">
+          </md-input-container>
+          
+
+          <md-input-container class="md-block">
+            <label>Secondary Contact Person Name</label>
+            <input ng-model="vendor.contactDetails.secondaryContactPerson"
+                   ng-init="vendor.contactDetails.secondaryContactPerson = null">
+          </md-input-container>
+
+
+          <md-input-container class="md-block">
+            <label>Secondary Email ID</label>
+            <input ng-model="vendor.contactDetails.secondaryEmailId" type="email"
+                   ng-init="vendor.contactDetails.secondaryEmailId = null">
+          </md-input-container>
+
+
+          <md-input-container class="md-block">
+            <label>Secondary Phone No</label>
+            <input type="text" ng-model="vendor.contactDetails.secondaryMobileNumber" 
+                   onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                   ng-init="vendor.contactDetails.secondaryMobileNumber = null">
+          </md-input-container>
+
+          <md-input-container class="md-block">
+            <label>Secondary Landline No</label>
+            <input type="text" ng-model="vendor.contactDetails.secondaryLandlineNumber"
+                   onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                   ng-init="vendor.contactDetails.secondaryLandlineNumber = null">
+          </md-input-container>
+          <br />
+
+          <md-input-container class="md-block">
+            <label>Complaint Person Name</label>
+            <input ng-model="vendor.contactDetails.complaintContactPerson"
+                   ng-init="vendor.contactDetails.complaintContactPerson = null">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Escalation Email ID</label>
+            <input ng-model="vendor.contactDetails.complaintEmailId" type="email"
+                   ng-init="vendor.contactDetails.complaintEmailId = null">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label> Escalation Phone No</label>
+            <input type="text" ng-model="vendor.contactDetails.complaintMobileNumber"
+                   onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                   ng-init="vendor.contactDetails.complaintMobileNumber = null">
+          </md-input-container>
+          <md-input-container class="md-block">
+            <label>Escalation Landline No</label>
+            <input ng-model="vendor.contactDetails.complaintLandlineNumber" type="number"
+                   ng-init="vendor.contactDetails.complaintLandlineNumber = null">
+          </md-input-container>
+
+          <md-card>
+
+            <md-toolbar class="md-primary">
+              <div class="md-toolbar-tools">
+                <h2 class="md-flex">Facilities</h2>
+              </div>
+              <br />
+            </md-toolbar>
+            <br />
+            <md-checkbox ng-model="vendor.amenities.ac" 
+                         aria-label="AC"
+                         ng-init="vendor.amenities.ac = null">
+              AC
+            </md-checkbox>
+            <md-checkbox ng-model="vendor.amenities.parking"
+                         aria-label="Parking"
+                         ng-init="vendor.amenities.parking = null">
+              Parking
+            </md-checkbox>
+
+            <md-checkbox ng-model="vendor.amenities.teaCoffee"
+                         aria-label="Tea Coffee"
+                         ng-init="vendor.amenities.teaCoffee = null">
+              Tea/Coffee
+            </md-checkbox>
+            <md-checkbox ng-model="vendor.amenities.ccAccepted"
+                         aria-label="CC Accepted"
+                         ng-init="vendor.amenities.ccAccepted = null">
+              Credit Card Accepted
+            </md-checkbox>
+            <md-checkbox ng-model="vendor.amenities.wifi"
+                         aria-label="Wifi"
+                         ng-init="vendor.amenities.wifi = null">
+              Wifi
+            </md-checkbox>
+
+          </md-card>
+
+
+          <md-card>
+
+            <md-toolbar class="md-primary">
+              <div class="md-toolbar-tools">
+                <h2 class="md-flex">Working Days</h2>
+              </div>
+            </md-toolbar>
+            <br />
+
+            <md-checkbox 
+              ng-model="data.selectall" 
+              aria-label="Working Days" 
+              ng-init="vendor.working.sunday.active=
+                       vendor.working.monday.active=
+                       vendor.working.tuesday.active=
+                       vendor.working.wednesday.active=
+                       vendor.working.thursday.active=
+                       vendor.working.friday.active=
+                       vendor.working.saturday.active=null">
+              Select All
+            </md-checkbox>
+            <div 
+              ng-if="data.selectall==true" 
+              ng-init="vendor.working.sunday.active=
+                       vendor.working.monday.active=
+                       vendor.working.tuesday.active=
+                       vendor.working.wednesday.active=
+                       vendor.working.thursday.active=
+                       vendor.working.friday.active=
+                       vendor.working.saturday.active=true">
+
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="data.allstart" ng-change="master_start()">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="data.allend" ng-change="master_end()">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+
+            <md-checkbox ng-model="vendor.working.sunday.active"
+                         aria-label="Sunday"
+                         ng-init="vendor.working.sunday.active = null">
+              Sunday
+            </md-checkbox>
+            <div ng-if="vendor.working.sunday.active==true">
+
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.working.sunday.start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.working.sunday.end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+
+
+            <md-checkbox ng-model="vendor.working.monday.active" 
+                         aria-label="Monday"
+                         ng-init="vendor.working.monday.active = null">
+              Monday
+            </md-checkbox>
+            <div ng-if="vendor.working.monday.active==true">
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.working.monday.start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.working.monday.end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+
+            <md-checkbox ng-model="vendor.working.tuesday.active"
+                         aria-label="Tuesday"
+                         ng-init="vendor.working.tuesday.active = null">
+              Tuesday
+            </md-checkbox>
+            <div ng-if="vendor.working.tuesday.active==true">
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.working.tuesday.start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.working.tuesday.end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+            <md-checkbox ng-model="vendor.working.wednesday.active"
+                         aria-label="Wednesday"
+                         ng-init="vendor.working.wednesday.active = null">
+              Wednesday
+            </md-checkbox>
+            <div ng-if="vendor.working.wednesday.active==true">
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.working.wednesday.start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.working.wednesday.end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+            <md-checkbox ng-model="vendor.working.thursday.active"
+                         aria-label="Thursday"
+                         ng-init="vendor.working.thursday.active = null">
+              Thursday
+            </md-checkbox>
+
+            <div ng-if="vendor.working.thursday.active==true">
+
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.working.thursday.start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.working.thursday.end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+
+            <md-checkbox ng-model="vendor.working.friday.active"
+                         aria-label="Friday"
+                         ng-init="vendor.working.friday.active = null">
+              Friday
+            </md-checkbox>
+            <div ng-if="vendor.working.friday.active==true">
+
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.working.friday.start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.working.friday.end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+
+            </div>
+
+            <md-checkbox ng-model="vendor.working.saturday.active"
+                         aria-label="Saturday"
+                         ng-init="vendor.working.saturday.active = null">
+              Saturday
+            </md-checkbox>
+            <div ng-if="vendor.working.saturday.active==true">
+              <div layout="row" layout-align="space-around center">
+                <label> Start Time</label>
+                <md-select ng-model="vendor.working.saturday.start">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+
+                </md-select>
+                <label>End Time</label>
+                <md-select ng-model="vendor.working.saturday.end">
+                  <md-option ng-repeat="time in times">
+                    {{time}}
+                  </md-option>
+                </md-select>
+              </div>
+            </div>
+          </md-card>
+
+        </div>
+        <md-card-actions>
+          <button ng-disabled="!ifSubmit" id="vendorSubmitButton" class="md-button md-primary md-raised" ng-click="submit()">Save</button>
+          <!--<button id="vendorUpdateButton" class="md-button md-primary md-raised" ng-click="update($event)">Next</button>-->
+        </md-card-actions>
+      </md-card>
+    </div>    
+  </form>
+</div>
